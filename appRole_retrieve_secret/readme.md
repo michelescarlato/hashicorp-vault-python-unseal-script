@@ -83,8 +83,56 @@ Authenticated successfully!
 Retrieved secret: This is a secret message!
 ```
 
+NOTE: 
 
+a. role-id is retrieved with:
+```
+:/etc/vault.d$ vault read auth/approle/role/my-role/role-id
+Key        Value
+---        -----
+role_id    fc9183ca-c665-9c43-1608-c9e8da5f6c3b
+```
 
+b. Secret-id is created with:
+```
+$ vault write -f auth/approle/role/my-role/secret-id
+Key                   Value
+---                   -----
+secret_id             e48b63a9-6b87-ef27-15e8-eed964736781
+secret_id_accessor    30354010-6b95-caf0-e250-5d3856a674b7
+secret_id_num_uses    0
+secret_id_ttl         24h
+```
+
+b1. To increase the TTL of the secret-id:
+
+```
+vault write auth/approle/role/my-role secret_id_ttl=48h
+```
+Replace 48h with the desired TTL (e.g., 72h, 1w, etc.).
+
+Check if the change took place:
+
+```
+vault read auth/approle/role/my-role
+```
+
+Create a new secret-id
+```
+vault write -f auth/approle/role/my-role/secret-id
+```
+e.g.
+```
+~/hvac-hashicorp-vault$ vault write -f auth/approle/role/my-role/secret-id
+Key                   Value
+---                   -----
+secret_id             09bf0a40-a9e0-3dbd-d7dd-8f1915756436
+secret_id_accessor    7e132493-2519-b13b-c7c3-b08e8a2140ba
+secret_id_num_uses    0
+secret_id_ttl         48h
+
+```
+Just use the new value for secret_id in the Python script, and the new TTL will be applied.
 
 
 
