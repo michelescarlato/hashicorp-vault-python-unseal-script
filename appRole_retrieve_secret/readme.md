@@ -1,4 +1,4 @@
-On the vault server:
+On the Hashicorp Vault (1.18.2) server:
 
 1. enable approle
 
